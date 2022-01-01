@@ -48,7 +48,7 @@ namespace InventoryServer
             });
 
             services.AddScoped<IDbConnection>(provider => new SqlConnection(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IClientAgentRepository, ClientAgentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
