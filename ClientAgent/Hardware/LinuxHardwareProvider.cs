@@ -39,6 +39,10 @@ namespace ClientAgent.Hardware
 
             hostnameProcess.Start();
             var hostname = hostnameProcess.StandardOutput.ReadToEnd();
+
+            if (!string.IsNullOrEmpty(hostname))
+                hostname = hostname.Trim(' ', '\n');
+
             hostnameProcess.WaitForExit();
 
             var process = new Process() { 
