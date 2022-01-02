@@ -51,7 +51,7 @@ namespace ClientAgent.Hardware
 
             Console.WriteLine(output);
 
-            var splitAttr = output.Split("\n\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var splitAttr = output.Split("\n\n", StringSplitOptions.TrimEntries);
 
             Dictionary<string, object> cpuAttributes = new();
 
@@ -59,7 +59,7 @@ namespace ClientAgent.Hardware
             {
                 Console.WriteLine(splitAttr[i]);
 
-                var splitKey = splitAttr[i].Split(':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                var splitKey = splitAttr[i].Split(':', StringSplitOptions.TrimEntries);
 
                 if (splitKey.Length == 0)
                     continue;
