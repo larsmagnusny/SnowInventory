@@ -32,6 +32,12 @@ namespace ClientAgent
                 else
                     services.AddSingleton<IHardwareProvider, WindowsHardwareProvider>();
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                services.AddSingleton<IInstalledSoftwareProvider, LinuxInstalledSoftwareProvider>();
+
+                services.AddSingleton<IHardwareProvider, LinuxHardwareProvider>();
+            }
             else
                 throw new NotImplementedException("Platform not supported!");
 
@@ -41,13 +47,15 @@ namespace ClientAgent
 
             var hInfo = hardwareProvider.GetProfile();
 
+            Console.WriteLine(hInfo.ToString());
+
             var clientHandler = new HttpClientHandler()
             {
                 ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; },
                 SslProtocols = System.Security.Authentication.SslProtocols.Tls
             };
 
-            HttpClient client = new HttpClient(clientHandler);
+            HttpClient client = new(clientHandler);
             client.BaseAddress = new Uri("https://DESKTOP-2TOHRIH.local:44308/");
 
             // Are we already registered?

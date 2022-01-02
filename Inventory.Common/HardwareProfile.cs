@@ -15,5 +15,10 @@ namespace Inventory.Common
         public string BIOS { get; set; }
         public long Memory { get; set; }
         public long HDDSpace { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}\nComputerName: {ComputerName}\nOSVersion: {OSVersion}\nMotherboard: {Motherboard}\nBIOS: {BIOS}\nMemory: {Memory}\nHDDSpace: {HDDSpace}\n";
+        }
     }
 }
