@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ClientAgent.Utility
+namespace Inventory.Common.Utility
 {
 	/// <summary>
 	/// Helper methods for working with <see cref="Guid"/>.

@@ -1,5 +1,6 @@
-﻿using ClientAgent.Utility;
-using Hardware.Info;
+﻿using Hardware.Info;
+using Inventory.Common;
+using Inventory.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace ClientAgent.Hardware
 {
-    public static class HardwareProvider
+    public class WindowsHardwareProvider : IHardwareProvider
     {
         static readonly IHardwareInfo hardwareInfo = new HardwareInfo(); 
-        public static HardwareProfile GetProfile()
+        public HardwareProfile GetProfile()
         {
             hardwareInfo.RefreshMotherboardList();
             hardwareInfo.RefreshBIOSList();

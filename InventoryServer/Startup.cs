@@ -1,3 +1,4 @@
+using InventoryServer.DataAccess.Configuration;
 using InventoryServer.DataAccess.Repositories.Implementation;
 using InventoryServer.DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +25,8 @@ namespace InventoryServer
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            _ = new ConfigureDapperPlus();
         }
 
         public IConfiguration Configuration { get; }

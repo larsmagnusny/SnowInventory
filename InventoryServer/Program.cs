@@ -20,7 +20,7 @@ namespace InventoryServer
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls("http://localhost:5000", "https://localhost:5001");
+                    webBuilder.UseUrls("http://*:5000", "https://*:44308");
                     webBuilder.UseStartup<Startup>();
                 });
     }

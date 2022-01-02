@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ClientAgent": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
