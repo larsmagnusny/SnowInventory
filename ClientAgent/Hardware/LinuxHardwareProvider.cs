@@ -84,6 +84,9 @@ namespace ClientAgent.Hardware
                 }
             }
 
+            Console.WriteLine(hostname);
+            Console.WriteLine(cpuAttributes.ToString());
+
             return new()
             {
                 Id = GuidUtility.Create(GuidUtility.UrlNamespace, (cpuAttributes["Serial"] as string).ToUpper()),
