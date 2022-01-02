@@ -49,16 +49,12 @@ namespace ClientAgent.Hardware
             var output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
-            Console.WriteLine(output);
-
             var splitAttr = output.Split("\n\n", StringSplitOptions.TrimEntries);
 
             Dictionary<string, object> cpuAttributes = new();
 
             for(int i = 0; i < splitAttr.Length; i++)
             {
-                Console.WriteLine(splitAttr[i]);
-
                 var categoryAttrs = splitAttr[i].Split('\n');
 
                 if (categoryAttrs.Length == 0)
@@ -71,10 +67,9 @@ namespace ClientAgent.Hardware
                     for(int j = 0; j < categoryAttrs.Length; j++)
                     {
                         var splitKey = categoryAttrs[j].Split(':', StringSplitOptions.TrimEntries);
-                        Console.WriteLine($"{splitKey[0]}: {splitKey[1]}");
                         if (!processorAttributes.ContainsKey(splitKey[0]))
                         {
-                            processorAttributes[splitKey[0]] = splitKey[1];
+                            processorAttributes[splitKey[0]] = splitKey[1]?.Trim('\n');
                         }
                     }
 
@@ -85,17 +80,13 @@ namespace ClientAgent.Hardware
                     for (int j = 0; j < categoryAttrs.Length; j++)
                     {
                         var splitKey = categoryAttrs[j].Split(':', StringSplitOptions.TrimEntries);
-                        Console.WriteLine($"{splitKey[0]}: {splitKey[1]}");
                         if (!cpuAttributes.ContainsKey(splitKey[0]))
                         {
-                            cpuAttributes[splitKey[0]] = splitKey[1];
+                            cpuAttributes[splitKey[0]] = splitKey[1]?.Trim('\n');
                         }
                     }
                 }
             }
-
-            Console.WriteLine(hostname);
-            Console.WriteLine(cpuAttributes.ToString());
 
             return new()
             {
