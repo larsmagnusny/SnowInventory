@@ -59,34 +59,36 @@ namespace ClientAgent.Hardware
             {
                 Console.WriteLine(splitAttr[i]);
 
-                var splitKey = splitAttr[i].Split(':', StringSplitOptions.TrimEntries);
+                var categoryAttrs = splitAttr[i].Split('\n');
 
-                if (splitKey.Length == 0)
+                if (categoryAttrs.Length == 0)
                     continue;
 
-                if (splitKey[0].CompareTo("processor") == 0)
+                if (categoryAttrs[0].IndexOf("processor") != -1)
                 {
                     Dictionary<string, string> processorAttributes = new();
 
-                    for(int j = 0; j < splitKey.Length - 1; j += 2)
+                    for(int j = 0; j < categoryAttrs.Length; j++)
                     {
-                        Console.WriteLine($"{splitKey[j]}: {splitKey[j+1]}");
-                        if (!processorAttributes.ContainsKey(splitKey[j]))
+                        var splitKey = categoryAttrs[j].Split(':', StringSplitOptions.TrimEntries);
+                        Console.WriteLine($"{splitKey[0]}: {splitKey[1]}");
+                        if (!processorAttributes.ContainsKey(splitKey[0]))
                         {
-                            processorAttributes[splitKey[j]] = splitKey[j + 1];
+                            processorAttributes[splitKey[0]] = splitKey[1];
                         }
                     }
 
-                    cpuAttributes.Add($"cpu{splitKey[1]}", processorAttributes);
+                    cpuAttributes.Add($"cpu{processorAttributes["processor"]}", processorAttributes);
                 }
                 else
                 {
-                    for (int j = 0; j < splitKey.Length - 1; j += 2)
+                    for (int j = 0; j < categoryAttrs.Length; j++)
                     {
-                        Console.WriteLine($"{splitKey[j]}: {splitKey[j + 1]}");
-                        if (!cpuAttributes.ContainsKey(splitKey[j]))
+                        var splitKey = categoryAttrs[j].Split(':', StringSplitOptions.TrimEntries);
+                        Console.WriteLine($"{splitKey[0]}: {splitKey[1]}");
+                        if (!cpuAttributes.ContainsKey(splitKey[0]))
                         {
-                            cpuAttributes[splitKey[j]] = splitKey[j + 1];
+                            cpuAttributes[splitKey[0]] = splitKey[1];
                         }
                     }
                 }
