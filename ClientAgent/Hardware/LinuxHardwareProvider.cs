@@ -23,6 +23,16 @@ namespace ClientAgent.Hardware
                 RedirectStandardError = false
             };
 
+            var osInfoStart = new ProcessStartInfo
+            {
+                FileName = "cat",
+                Arguments = "/etc/os-release",
+                UseShellExecute = false,
+                CreateNoWindow = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = false
+            };
+
             var hostNameStart = new ProcessStartInfo
             {
                 FileName = "hostname",
@@ -45,6 +55,15 @@ namespace ClientAgent.Hardware
 
             hostnameProcess.WaitForExit();
 
+            var osInfoProcess = new Process
+            {
+                StartInfo = osInfoStart
+            };
+
+            osInfoProcess.Start();
+            var osInfoOutput = osInfoProcess.StandardOutput.ReadToEnd();
+            osInfoProcess.WaitForExit();
+
             var process = new Process() { 
                 StartInfo = processStart
             };
@@ -54,8 +73,10 @@ namespace ClientAgent.Hardware
             process.WaitForExit();
 
             var splitAttr = output.Split("\n\n", StringSplitOptions.TrimEntries);
+            var splitOsInfo = osInfoOutput.Split("\n");
 
             Dictionary<string, object> cpuAttributes = new();
+            Dictionary<string, string> osInfo = new();
 
             for(int i = 0; i < splitAttr.Length; i++)
             {
@@ -92,13 +113,20 @@ namespace ClientAgent.Hardware
                 }
             }
 
+            for(int i = 0; i < splitOsInfo.Length; i++)
+            {
+                var splitKey = splitOsInfo[i].Split("=");
+
+                osInfo.Add(splitKey[0], splitKey[1].Trim('"', '\n'));
+            }
+
             return new()
             {
                 Id = GuidUtility.Create(GuidUtility.UrlNamespace, (cpuAttributes["Serial"] as string).ToUpper()),
                 ComputerName = hostname,
                 BIOS = null,
                 HDDSpace = 0,
-                OSVersion = "Linux",
+                OSVersion = $"{osInfo["NAME"]} {osInfo["VERSION"]}",
                 Memory = 0,
                 Motherboard = null
             };
