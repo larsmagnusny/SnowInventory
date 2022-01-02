@@ -73,7 +73,7 @@ namespace ClientAgent.Hardware
             process.WaitForExit();
 
             var splitAttr = output.Split("\n\n", StringSplitOptions.TrimEntries);
-            var splitOsInfo = osInfoOutput.Split("\n");
+            var splitOsInfo = osInfoOutput.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             Dictionary<string, object> cpuAttributes = new();
             Dictionary<string, string> osInfo = new();
@@ -115,6 +115,9 @@ namespace ClientAgent.Hardware
 
             for(int i = 0; i < splitOsInfo.Length; i++)
             {
+                if (string.IsNullOrEmpty(splitOsInfo[i]))
+                    continue;
+
                 var splitKey = splitOsInfo[i].Split("=");
 
                 osInfo.Add(splitKey[0], splitKey[1].Trim('"', '\n'));
