@@ -49,12 +49,16 @@ namespace ClientAgent.Hardware
             var output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
+            Console.WriteLine(output);
+
             var splitAttr = output.Split("\n\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
             Dictionary<string, object> cpuAttributes = new();
 
             for(int i = 0; i < splitAttr.Length; i++)
             {
+                Console.WriteLine(splitAttr[i]);
+
                 var splitKey = splitAttr[i].Split(':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 if (splitKey.Length == 0)
@@ -66,16 +70,20 @@ namespace ClientAgent.Hardware
 
                     for(int j = 0; j < splitKey.Length - 1; j += 2)
                     {
+                        Console.WriteLine($"{splitKey[j]}: {splitKey[j+1]}");
                         if (!processorAttributes.ContainsKey(splitKey[j]))
                         {
-                            cpuAttributes[splitKey[j]] = splitKey[j + 1];
+                            processorAttributes[splitKey[j]] = splitKey[j + 1];
                         }
                     }
+
+                    cpuAttributes.Add($"cpu{splitKey[1]}", processorAttributes);
                 }
                 else
                 {
                     for (int j = 0; j < splitKey.Length - 1; j += 2)
                     {
+                        Console.WriteLine($"{splitKey[j]}: {splitKey[j + 1]}");
                         if (!cpuAttributes.ContainsKey(splitKey[j]))
                         {
                             cpuAttributes[splitKey[j]] = splitKey[j + 1];
